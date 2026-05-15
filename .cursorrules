@@ -1,0 +1,15 @@
+# Project: Social Media SaaS — Backend
+# Stack: Node.js, Express, PostgreSQL, Prisma, BullMQ, Redis
+# Scope: Backend only. No frontend files, no HTML, no CSS, no public folder.
+
+## Rules
+- This is a backend API project. Never generate frontend code.
+- Use industry-standard folder structure for a Node/Express backend.
+- All configuration via environment variables. Never hardcode secrets.
+- Use async/await throughout. No callbacks.
+- Every route must have input validation.
+- Error handling must be explicit — no silent catches.
+- No emojis, no decorative comments, no vibe-coded patterns.
+- Prisma is the only way to interact with the database. No raw SQL unless explicitly asked.
+- One concern per file. Routes, controllers, services, middleware are separate.
+- Do not install any package that was not explicitly requested.
