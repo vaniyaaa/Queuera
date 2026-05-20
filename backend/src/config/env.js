@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 const REQUIRED_KEYS = [
-  'PORT',
   'MONGODB_URI',
   'REDIS_URL',
   'META_APP_ID',
@@ -25,7 +24,7 @@ if (missing.length > 0) {
   throw new Error(`Missing required environment variables: ${list}`);
 }
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 const REDIS_URL = process.env.REDIS_URL;
 const META_APP_ID = process.env.META_APP_ID;

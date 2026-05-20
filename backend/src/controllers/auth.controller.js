@@ -70,7 +70,7 @@ async function login(req, res, next) {
     res.cookie('queuera_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return sendSuccess(res, { id: user._id, email: user.email }, 200);
@@ -267,7 +267,7 @@ async function logout(req, res, next) {
   res.clearCookie('queuera_token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
   });
   return sendSuccess(res, { message: 'Logged out successfully' }, 200);
 }

@@ -398,3 +398,12 @@
 {"command":{"args":["default","********"],"name":"auth"},"level":"error"}
 {"command":{"args":["default","********"],"name":"auth"},"level":"error"}
 {"command":{"args":["default","********"],"name":"auth"},"level":"error"}
+{"code":"ECONNRESET","errno":-4077,"level":"error","syscall":"read"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
+{"code":"ENOTFOUND","errno":-3008,"hostname":"profound-krill-78136.upstash.io","level":"error","syscall":"getaddrinfo"}
