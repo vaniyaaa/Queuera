@@ -33,7 +33,7 @@ export default function RegisterForm() {
       const loginRes = await api.post('/auth/login', { email, password });
       const { id, email: userEmail } = loginRes.data.data;
       setStoredUser({ id, email: userEmail });
-      router.push('/dashboard');
+      window.location.href = '/dashboard';
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||

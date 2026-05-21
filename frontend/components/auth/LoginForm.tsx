@@ -22,7 +22,7 @@ export default function LoginForm() {
       const res = await api.post('/auth/login', { email, password });
       const { id, email: userEmail } = res.data.data;
       setStoredUser({ id, email: userEmail });
-      router.push('/dashboard');
+      window.location.href = '/dashboard';
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
