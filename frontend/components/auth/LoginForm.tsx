@@ -19,11 +19,20 @@ export default function LoginForm() {
     setError('');
     setLoading(true);
     try {
+      console.info('[auth:login] submitting login request', { email });
       const res = await api.post('/auth/login', { email, password });
       const { id, email: userEmail } = res.data.data;
+      console.info('[auth:login] backend login succeeded', { userId: id });
       setStoredUser({ id, email: userEmail });
+      const sessionRes = await fetch('/api/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, email: userEmail }),
+      });
+      console.info('[auth:login] frontend session response', { status: sessionRes.status, ok: sessionRes.ok });
       window.location.href = '/dashboard';
     } catch (err: unknown) {
+      console.error('[auth:login] failed', err);
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
         'Login failed. Please try again.';

@@ -28,13 +28,23 @@ export default function RegisterForm() {
     }
     setLoading(true);
     try {
+      console.info('[auth:register] submitting register request', { email });
       await api.post('/auth/register', { email, password });
       // Auto-login after register
+      console.info('[auth:register] register succeeded, submitting login request', { email });
       const loginRes = await api.post('/auth/login', { email, password });
       const { id, email: userEmail } = loginRes.data.data;
+      console.info('[auth:register] backend login succeeded', { userId: id });
       setStoredUser({ id, email: userEmail });
+      const sessionRes = await fetch('/api/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, email: userEmail }),
+      });
+      console.info('[auth:register] frontend session response', { status: sessionRes.status, ok: sessionRes.ok });
       window.location.href = '/dashboard';
     } catch (err: unknown) {
+      console.error('[auth:register] failed', err);
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ||
         'Registration failed. Please try again.';

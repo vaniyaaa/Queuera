@@ -19,6 +19,7 @@ const {
 const { encryptToken } = require('../services/token.service.js');
 const { sendSuccess } = require('../utils/response.js');
 const { FRONTEND_URL } = require('../config/env.js');
+const logger = require('../utils/logger.js');
 
 async function register(req, res, next) {
   try {
@@ -47,16 +48,22 @@ async function register(req, res, next) {
 async function login(req, res, next) {
   try {
     const { email, password } = req.body;
+    const origin = req.get('origin') ?? 'none';
+    const referer = req.get('referer') ?? 'none';
+
+    logger.info(`[auth:login] attempt email=${email} origin=${origin} referer=${referer} nodeEnv=${process.env.NODE_ENV ?? 'unset'}`);
 
     const user = await User.findOne({ email });
 
     if (!user) {
+      logger.warn(`[auth:login] failed reason=user_not_found email=${email} origin=${origin}`);
       next({ status: 401, message: 'Invalid credentials' });
       return;
     }
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
+      logger.warn(`[auth:login] failed reason=password_mismatch userId=${user._id} origin=${origin}`);
       next({ status: 401, message: 'Invalid credentials' });
       return;
     }
@@ -67,14 +74,20 @@ async function login(req, res, next) {
       { expiresIn: '7d' },
     );
 
-    res.cookie('queuera_token', token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie('queuera_token', token, cookieOptions);
+    logger.info(
+      `[auth:login] success userId=${user._id} origin=${origin} cookieSecure=${cookieOptions.secure} cookieSameSite=${cookieOptions.sameSite} frontendUrl=${FRONTEND_URL}`,
+    );
     return sendSuccess(res, { id: user._id, email: user.email }, 200);
   } catch (err) {
+    logger.error(`[auth:login] error message=${err.message}`);
     next(err);
   }
 }
@@ -264,6 +277,7 @@ async function linkedInCallback(req, res, next) {
 }
 
 async function logout(req, res, next) {
+  logger.info(`[auth:logout] origin=${req.get('origin') ?? 'none'} hasCookie=${Boolean(req.cookies?.queuera_token)}`);
   res.clearCookie('queuera_token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

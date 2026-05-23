@@ -56,8 +56,14 @@ export default function Sidebar() {
 
   async function handleLogout() {
     try {
+      console.info('[auth:logout] submitting backend logout request');
       await api.post('/auth/logout');
-    } catch {}
+      console.info('[auth:logout] backend logout succeeded');
+    } catch (err) {
+      console.error('[auth:logout] backend logout failed', err);
+    }
+    const sessionRes = await fetch('/api/session', { method: 'DELETE' });
+    console.info('[auth:logout] frontend session clear response', { status: sessionRes.status, ok: sessionRes.ok });
     clearStoredUser();
     router.push('/login');
   }

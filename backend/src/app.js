@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const routes = require('./routes/index.js');
 const errorHandler = require('./middleware/error.middleware.js');
+const logger = require('./utils/logger.js');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors({
     if (!origin || ALLOWED_ORIGINS.includes(origin)) {
       callback(null, true);
     } else {
+      logger.warn(`[cors] blocked origin=${origin} allowed=${ALLOWED_ORIGINS.join(',')}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
